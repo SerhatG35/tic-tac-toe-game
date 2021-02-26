@@ -38,12 +38,12 @@ code {
   width: 100%;
   text-align: center;
   user-select: none;
-  color: #003459;
+  color: #EBCFB2;
 }
 .desc {
   font-size: 1.75em;
   user-select: none;
-  color: #003459;
+  color: #EBCFB2;
 }
 .grid-container {
   position: absolute;
@@ -55,11 +55,13 @@ code {
   padding: 0.5em;
   width: 34em;
   height: 34em;
+  gap: 1em;
 }
 .grid-item {
   width: 160px;
   height: 160px;
   border: 0.05em solid #2f2f2f;
+  border-radius: 0.05em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,7 +71,8 @@ code {
   align-self: center;
   user-select: none;
   will-change: transform;
-  color: #003459;
+  transition: box-shadow 0.5s;
+  color: #EBCFB2;
 }
 .grid-item:hover {
   background-color: #d47f72;
@@ -85,7 +88,7 @@ code {
   border-radius: 0.2em;
   box-shadow: 0 0.3em 0.3em 0.1em black;
   background-color: #e26d5c;
-  color: #ffd166;
+  color: #EBCFB2;
   outline: none;
   cursor: pointer;
   user-select: none;
@@ -93,7 +96,7 @@ code {
 .winner-text {
   text-align: center;
   font-size: 1.75em;
-  color: #003459;
+  color: #EBCFB2;
   user-select: none;
 }
 .bottom {

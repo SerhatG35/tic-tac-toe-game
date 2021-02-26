@@ -11,6 +11,18 @@ function App() {
     Array(9).fill(false)
   );
 
+  const [props, set] = useSpring(() => ({
+    xys: [0, 0, 1],
+    config: { mass: 5, tension: 350, friction: 40 },
+  }));
+  const calc = (x: number, y: number) => [
+    -(y - window.innerHeight / 2) / 20,
+    (x - window.innerWidth / 2) / 20,
+    1.1,
+  ];
+  const trans: any = (x: number, y: number, s: number) =>
+    `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`;
+
   const animation = useSpring({
     from: { opacity: 0 },
     to: { opacity: 1 },
@@ -18,11 +30,11 @@ function App() {
   });
   const resetButtonAppear = useSpring({
     marginLeft: gameOver ? 0 : -1500,
-    config: { duration: 500 },
+    config: { duration: 250 },
   });
   const resetButtonDisappear = useSpring({
     marginLeft: gameOver ? -1500 : 0,
-    config: { duration: 500 },
+    config: { duration: 250 },
   });
 
   const isGameOver = (results: string[]) => {
@@ -34,7 +46,7 @@ function App() {
         results[y] === results[z]
       ) {
         setWinner(results[x]);
-        setGameOver(!gameOver); //HIGHLIGHT WINNING BOXES
+        setGameOver(!gameOver);
       }
     });
     if (!squares.includes("") && !gameOver) {
@@ -74,14 +86,21 @@ function App() {
         <div className="grid-container">
           {squares.map((square, index) => {
             return (
-              <div
+              <a.div
                 className="grid-item"
                 key={index}
                 data-grid={index + 1}
                 onClick={handleClick}
+                onMouseMove={({ clientX: x, clientY: y }) =>
+                  set({ xys: calc(x, y) })
+                }
+                onMouseLeave={() => set({ xys: [0, 0, 1] })}
+                style={{
+                  transform: props.xys.interpolate(trans),
+                }}
               >
                 {square}
-              </div>
+              </a.div>
             );
           })}
         </div>
