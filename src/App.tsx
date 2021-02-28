@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { log } from "node:console";
+import { useRef, useState, useEffect } from "react";
 import { useSpring, animated as a } from "react-spring";
 import { WINNING_CONDITIONS } from "./utils/constants";
 
 function App() {
   const [turn, setTurn] = useState<boolean>(true); // turn : true(X) false(O)
-  const [winner, setWinner] = useState<string>("");
+  const [winner, setWinner] = useState<string>(""); // either X or O
   const [squares, setSquares] = useState<string[]>(Array(9).fill(""));
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [grid, setGrid] = useState<{ [key: number]: boolean }>(
     Array(9).fill(false)
   );
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [winningBoxesIndex, setWinningBoxesIndex] = useState(Array(3).fill(0));
 
   const [props, set] = useSpring(() => ({
     xys: [0, 0, 1],
@@ -38,7 +41,7 @@ function App() {
   });
 
   const isGameOver = (results: string[]) => {
-    WINNING_CONDITIONS.map((condition) => {
+    WINNING_CONDITIONS.forEach((condition) => {
       const [x, y, z] = condition;
       if (
         results[x] &&
@@ -46,7 +49,9 @@ function App() {
         results[y] === results[z]
       ) {
         setWinner(results[x]);
+        setWinningBoxesIndex([x, y, z]);
         setGameOver(!gameOver);
+        paintWinningBoxes([x, y, z]);
       }
     });
     if (!squares.includes("") && !gameOver) {
@@ -60,6 +65,19 @@ function App() {
     setTurn(true);
     setGrid(Array(9).fill(false));
     setWinner("");
+    paintWinningBoxes(winningBoxesIndex);
+  };
+
+  const paintWinningBoxes = ([a, b, c]: number[]) => {
+    if (gridRef && gridRef.current) {
+      const paintBoxArray = Array.from(gridRef.current.childNodes);
+      [a, b, c].forEach((eachWinningBox) => {
+        let boxToPaint = paintBoxArray[eachWinningBox] as HTMLElement;
+        !gameOver
+          ? (boxToPaint.style.backgroundColor = "green")
+          : (boxToPaint.style.backgroundColor = "transparent");
+      });
+    }
   };
 
   const handleClick = ({ target }: any) => {
@@ -67,7 +85,7 @@ function App() {
     const newSquares = squares;
     if (gameOver) return null;
     if (!grid[boxIndex]) {
-      newSquares[boxIndex - 1] = turn ? "X" : "O";
+      newSquares[boxIndex] = turn ? "X" : "O";
       setGrid({ ...grid, [boxIndex]: true });
       turn ? setTurn(false) : setTurn(true);
     }
@@ -83,13 +101,13 @@ function App() {
         </span>
       </a.div>
       <a.div style={animation}>
-        <div className="grid-container">
+        <div className="grid-container" ref={gridRef}>
           {squares.map((square, index) => {
             return (
               <a.div
                 className="grid-item"
                 key={index}
-                data-grid={index + 1}
+                data-grid={index}
                 onClick={handleClick}
                 onMouseMove={({ clientX: x, clientY: y }) =>
                   set({ xys: calc(x, y) })

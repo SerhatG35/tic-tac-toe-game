@@ -72,6 +72,7 @@ code {
   user-select: none;
   will-change: transform;
   transition: box-shadow 0.5s;
+  background-color: transparent;
   color: #EBCFB2;
 }
 .grid-item:hover {
