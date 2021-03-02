@@ -22,6 +22,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+.main-container {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
 .head {
   display: flex;
   flex-direction: column;
@@ -38,18 +47,18 @@ code {
   width: 100%;
   text-align: center;
   user-select: none;
-  color: #EBCFB2;
+  color: #ebcfb2;
 }
 .desc {
   font-size: 1.75em;
   user-select: none;
-  color: #EBCFB2;
+  color: #ebcfb2;
 }
 .grid-container {
-  position: absolute;
+  /* position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  left: 50%; */
+  /* transform: translate(-50%, -50%); */
   display: grid;
   grid-template-columns: auto auto auto;
   padding: 0.5em;
@@ -73,7 +82,7 @@ code {
   will-change: transform;
   transition: box-shadow 0.5s;
   background-color: transparent;
-  color: #EBCFB2;
+  color: #ebcfb2;
 }
 .grid-item:hover {
   background-color: #d47f72;
@@ -89,7 +98,7 @@ code {
   border-radius: 0.2em;
   box-shadow: 0 0.3em 0.3em 0.1em black;
   background-color: #e26d5c;
-  color: #EBCFB2;
+  color: #ebcfb2;
   outline: none;
   cursor: pointer;
   user-select: none;
@@ -97,14 +106,14 @@ code {
 .winner-text {
   text-align: center;
   font-size: 1.75em;
-  color: #EBCFB2;
+  color: #ebcfb2;
   user-select: none;
 }
 .bottom {
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 82%;
+  top: 84%;
   left: 50%;
   transform: translate(-50%);
   height: 12%;

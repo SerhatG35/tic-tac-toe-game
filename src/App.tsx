@@ -40,6 +40,18 @@ function App() {
     config: { duration: 250 },
   });
 
+  const paintWinningBoxes = ([a, b, c]: number[]) => {
+    if (gridRef && gridRef.current) {
+      const paintBoxArray = Array.from(gridRef.current.childNodes);
+      [a, b, c].forEach((eachWinningBox) => {
+        let boxToPaint = paintBoxArray[eachWinningBox] as HTMLElement;
+        !gameOver
+          ? (boxToPaint.style.backgroundColor = "green")
+          : (boxToPaint.style.backgroundColor = "transparent");
+      });
+    }
+  };
+
   const isGameOver = (results: string[]) => {
     WINNING_CONDITIONS.forEach((condition) => {
       const [x, y, z] = condition;
@@ -68,18 +80,6 @@ function App() {
     paintWinningBoxes(winningBoxesIndex);
   };
 
-  const paintWinningBoxes = ([a, b, c]: number[]) => {
-    if (gridRef && gridRef.current) {
-      const paintBoxArray = Array.from(gridRef.current.childNodes);
-      [a, b, c].forEach((eachWinningBox) => {
-        let boxToPaint = paintBoxArray[eachWinningBox] as HTMLElement;
-        !gameOver
-          ? (boxToPaint.style.backgroundColor = "green")
-          : (boxToPaint.style.backgroundColor = "transparent");
-      });
-    }
-  };
-
   const handleClick = ({ target }: any) => {
     const boxIndex: number = target.getAttribute("data-grid");
     const newSquares = squares;
@@ -94,14 +94,14 @@ function App() {
 
   return (
     <div className="App">
-      <a.div className="head" style={animation}>
-        <h2 className="title">TIC-TAC-TOE</h2>
-        <span className="desc">
-          {!gameOver ? (turn ? "X's turn" : "O's turn") : "Game Over!"}
-        </span>
-      </a.div>
-      <a.div style={animation}>
-        <div className="grid-container" ref={gridRef}>
+      <div className="main-container">
+        <a.div className="head" style={animation}>
+          <h2 className="title">TIC-TAC-TOE</h2>
+          <span className="desc">
+            {!gameOver ? (turn ? "X's turn" : "O's turn") : "Game Over!"}
+          </span>
+        </a.div>
+        <a.div className="grid-container" ref={gridRef} style={animation}>
           {squares.map((square, index) => {
             return (
               <a.div
@@ -121,8 +121,8 @@ function App() {
               </a.div>
             );
           })}
-        </div>
-      </a.div>
+        </a.div>
+      </div>
       {gameOver && (
         <a.div
           className="bottom"
