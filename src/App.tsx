@@ -1,6 +1,6 @@
-import { log } from "node:console";
 import { useRef, useState, useEffect } from "react";
 import { useSpring, animated as a } from "react-spring";
+import { aiMove } from "./utils/aiMove";
 import { WINNING_CONDITIONS } from "./utils/constants";
 
 function App() {
@@ -8,11 +8,10 @@ function App() {
   const [winner, setWinner] = useState<string>(""); // either X or O
   const [squares, setSquares] = useState<string[]>(Array(9).fill(""));
   const [gameOver, setGameOver] = useState<boolean>(false);
-  const [grid, setGrid] = useState<{ [key: number]: boolean }>(
-    Array(9).fill(false)
-  );
+  const [grid, setGrid] = useState<boolean[]>(Array(9).fill(false));
   const gridRef = useRef<HTMLDivElement>(null);
   const [winningBoxesIndex, setWinningBoxesIndex] = useState(Array(3).fill(0));
+  const newSquares = squares;
 
   const [props, set] = useSpring(() => ({
     xys: [0, 0, 1],
@@ -52,6 +51,7 @@ function App() {
     }
   };
 
+  //main game board winner check
   const isGameOver = (results: string[]) => {
     WINNING_CONDITIONS.forEach((condition) => {
       const [x, y, z] = condition;
@@ -82,15 +82,22 @@ function App() {
 
   const handleClick = ({ target }: any) => {
     const boxIndex: number = target.getAttribute("data-grid");
-    const newSquares = squares;
     if (gameOver) return null;
     if (!grid[boxIndex]) {
-      newSquares[boxIndex] = turn ? "X" : "O";
+      newSquares[boxIndex] = "X";
       setGrid({ ...grid, [boxIndex]: true });
-      turn ? setTurn(false) : setTurn(true);
+      isGameOver(newSquares);
+      setTurn(false);
     }
-    isGameOver(squares);
   };
+
+  useEffect(() => {
+    if (turn === false && gameOver === false) {
+      aiMove(newSquares, setGrid, grid);
+      isGameOver(newSquares);
+      setTurn(true);
+    }
+  }, [turn]);
 
   return (
     <div className="App">
