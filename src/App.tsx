@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useSpring, animated as a } from "react-spring";
-import { AiMove } from "./utils/AiMove";
+import { aiMove } from "./utils/aiMove";
 import { WINNING_CONDITIONS } from "./utils/constants";
 
 function App() {
@@ -93,7 +93,7 @@ function App() {
 
   useEffect(() => {
     if (turn === false && gameOver === false) {
-      AiMove(newSquares, setGrid, grid, 0);
+      aiMove(newSquares, setGrid, grid, 0);
       isGameOver(newSquares);
       setTurn(true);
     }

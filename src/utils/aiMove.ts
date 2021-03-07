@@ -47,7 +47,7 @@ const checkWinner = (board: string[]) => {
     }
   };
 
- export const AiMove = (squareAi: string[],setGrid :React.Dispatch<React.SetStateAction<boolean[]>>,grid:boolean[] , depth:number) => {
+ export const aiMove = (squareAi: string[],setGrid :React.Dispatch<React.SetStateAction<boolean[]>>,grid:boolean[] , depth:number) => {
     let bestScore = Infinity;
     let indexToPlay = null;
     for (let i = 0; i < squareAi.length; i++) {
