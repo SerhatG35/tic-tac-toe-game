@@ -7,18 +7,15 @@ const checkWinner = (board: string[]) => {
       if (board[x] && board[x] === board[y] && board[y] === board[z]) {
         if (board[x] === "X") {
           return (result = 10);
-        } else {
+        } else{
           return (result = -10);
         }
-      } else if (!board.includes("")) result = 0;
-      else {
-        return (result = null);
-      }
+      } else if (!board.includes("")) return result = 0;
     }
     return result;
-  };
+}
 
-  const minimax = (tempSquares: string[], isMinimizing: boolean) => {
+  const minimax = (tempSquares: string[], isMinimizing: boolean,depth:number) => {
     let result = checkWinner(tempSquares);
     if (result !== null) {
       return result;
@@ -28,8 +25,9 @@ const checkWinner = (board: string[]) => {
       for (let i = 0; i < tempSquares.length; i++) {
         if (tempSquares[i] === "") {
           tempSquares[i] = "O";
-          let score = minimax(tempSquares, false);
+          let score = minimax(tempSquares, false,depth+1);
           tempSquares[i] = "";
+          score += depth
           bestScore = Math.min(score, bestScore);
         }
       }
@@ -39,8 +37,9 @@ const checkWinner = (board: string[]) => {
       for (let i = 0; i < tempSquares.length; i++) {
         if (tempSquares[i] === "") {
           tempSquares[i] = "X";
-          let score = minimax(tempSquares, true);
+          let score = minimax(tempSquares, true,depth+1);
           tempSquares[i] = "";
+          score -= depth
           bestScore = Math.max(score, bestScore);
         }
       }
@@ -48,13 +47,13 @@ const checkWinner = (board: string[]) => {
     }
   };
 
- export const aiMove = (squareAi: string[],setGrid :React.Dispatch<React.SetStateAction<boolean[]>>,grid:boolean[]) => {
+ export const AiMove = (squareAi: string[],setGrid :React.Dispatch<React.SetStateAction<boolean[]>>,grid:boolean[] , depth:number) => {
     let bestScore = Infinity;
     let indexToPlay = null;
     for (let i = 0; i < squareAi.length; i++) {
       if (squareAi[i] === "") {
         squareAi[i] = "O";
-        let score = minimax(squareAi, false);
+        let score = minimax(squareAi, false,depth+1);
         squareAi[i] = "";
         if (score < bestScore) {
           bestScore = score;
